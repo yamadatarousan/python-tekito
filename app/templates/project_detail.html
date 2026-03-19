@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+  <a class="back-link" href="/">← プロジェクト一覧へ戻る</a>
+  <h1>{{ project.name }}</h1>
+
+  <form class="filter-form" method="get" action="/projects/{{ project.id }}">
+    <label for="status-filter">状態で絞り込み</label>
+    <select id="status-filter" name="status_filter">
+      <option value="" {% if not status_filter %}selected{% endif %}>すべて</option>
+      {% for state in status_options %}
+      <option value="{{ state.value }}" {% if status_filter == state.value %}selected{% endif %}>{{ state.value }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">反映</button>
+  </form>
+</section>
+
+<section class="split-layout">
+  <article class="panel">
+    <h2>タスク追加</h2>
+    <form class="form" action="/projects/{{ project.id }}/tasks" method="post">
+      <label for="task-title">タイトル</label>
+      <input id="task-title" type="text" name="title" maxlength="120" required />
+
+      <label for="task-description">説明</label>
+      <textarea id="task-description" name="description" rows="4" maxlength="2000"></textarea>
+
+      <label for="task-due">期限日</label>
+      <input id="task-due" type="date" name="due_date_text" />
+
+      <button type="submit">タスクを追加</button>
+    </form>
+  </article>
+
+  <article class="panel">
+    <h2>タスク一覧</h2>
+    {% if tasks %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>タイトル</th>
+            <th>状態</th>
+            <th>期限日</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+          <tr>
+            <td>
+              <strong>{{ task.title }}</strong>
+              {% if task.description %}
+              <p class="muted small">{{ task.description }}</p>
+              {% endif %}
+            </td>
+            <td><span class="status status-{{ task.status.value }}">{{ task.status.value }}</span></td>
+            <td>{{ task.due_date if task.due_date else '-' }}</td>
+            <td>
+              <form action="/tasks/{{ task.id }}/cycle" method="post">
+                <input type="hidden" name="project_id" value="{{ project.id }}" />
+                <button type="submit">次の状態へ</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p class="muted">条件に一致するタスクはありません。</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

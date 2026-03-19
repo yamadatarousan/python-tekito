@@ -1,0 +1,17 @@
+# Pythonキャッシュ
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# テスト成果物
+.pytest_cache/
+
+# パッケージメタデータ
+*.egg-info/
+
+# ローカルDB
+learning_tasks.db
+
+# macOS
+.DS_Store

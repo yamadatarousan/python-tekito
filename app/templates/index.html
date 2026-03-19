@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+  <h1>ダッシュボード</h1>
+  <p class="muted">学習中の進捗を可視化して、作業の優先順位を決めやすくします。</p>
+
+  <div class="metrics-grid">
+    <article class="metric-card">
+      <span class="metric-label">総タスク数</span>
+      <strong class="metric-value">{{ metrics.total_count }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">完了数</span>
+      <strong class="metric-value">{{ metrics.done_count }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">期限切れ</span>
+      <strong class="metric-value">{{ metrics.overdue_count }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">進捗率</span>
+      <strong class="metric-value">{{ metrics.completion_rate }}%</strong>
+    </article>
+  </div>
+</section>
+
+<section class="split-layout">
+  <article class="panel">
+    <h2>プロジェクト一覧</h2>
+    {% if projects %}
+      <ul class="project-list">
+        {% for project in projects %}
+          <li class="project-item">
+            <a href="/projects/{{ project.id }}">{{ project.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">まだプロジェクトがありません。右のフォームから作成してください。</p>
+    {% endif %}
+  </article>
+
+  <article class="panel">
+    <h2>新規プロジェクト作成</h2>
+    <form class="form" action="/projects" method="post">
+      <label for="project-name">プロジェクト名</label>
+      <input id="project-name" type="text" name="name" maxlength="80" required />
+      <button type="submit">作成する</button>
+    </form>
+  </article>
+</section>
+{% endblock %}

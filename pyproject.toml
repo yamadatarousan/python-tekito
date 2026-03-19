@@ -1,0 +1,32 @@
+[project]
+name = "python-tekito"
+version = "0.1.0"
+description = "FastAPI + SQLiteで学ぶタスク管理アプリ"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+  "fastapi>=0.104.0,<0.110.0",
+  "uvicorn[standard]>=0.24.0,<0.31.0",
+  "sqlalchemy>=2.0.0,<3.0.0",
+  "jinja2>=3.1.0,<4.0.0",
+  "python-multipart>=0.0.6,<1.0.0",
+  "pydantic-settings>=2.1.0,<3.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0,<9.0.0",
+  "httpx>=0.24.0,<0.25.0"
+]
+
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel>=0.41.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
